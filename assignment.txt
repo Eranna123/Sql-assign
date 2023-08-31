@@ -1,0 +1,228 @@
+                              Assignment MySQLTable
+
+
+mysql> create database new
+    -> ;
+Query OK, 1 row affected (0.05 sec)
+
+mysql> use new;
+Database changed
+
+---- Create a table salespeople--------------------------------------------
+
+mysql> CREATE TABLE salespeople (
+    -> Snum INT PRIMARY KEY,
+    -> Sname VARCHAR(30) UNIQUE,
+    -> City VARCHAR(30),
+    -> Comm int
+    -> );
+Query OK, 0 rows affected (0.08 sec)
+  
+
+-- -- insert some values--------------------------------------------
+
+mysql> INSERT INTO salespeople values(1001,'Peel','London',12);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> INSERT INTO salespeople values(1002,'Serres','Sanjose',13);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO salespeople values(1004,'Motika','London',11);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO salespeople values(1007,'Rifkin','Barcelona',15);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO salespeople values(1003,'Axelrod','Newyork',10);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * from salespeople;
++------+---------+-----------+------+
+| Snum | Sname   | City      | Comm |
++------+---------+-----------+------+
+| 1001 | Peel    | London    |   12 |
+| 1002 | Serres  | Sanjose   |   13 |
+| 1003 | Axelrod | Newyork   |   10 |
+| 1004 | Motika  | London    |   11 |
+| 1007 | Rifkin  | Barcelona |   15 |
++------+---------+-----------+------+
+5 rows in set (0.00 sec)
+
+-- -- Create a table Customers------------------------------------------
+
+mysql> CREATE TABLE Customers (
+       Cnum INT PRIMARY KEY,
+       Cname VARCHAR(30) UNIQUE,
+       City VARCHAR(30),
+       Snum INT NOT NULL,
+       FOREIGN KEY (Snum) REFERENCES salespeople(Snum)
+        );
+Query OK, 0 rows affected (0.03 sec)
+   
+-- -- insert some values-------------------------------------------------
+
+mysql> INSERT INTO Customers VALUES (2001,'Hoffman','London',1001);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Customers VALUES (2002,'Givanni','Rome',1003);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO Customers VALUES (2003,'Liu','Sanjose',1002);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO Customers VALUES (2004,'Grass','Berlin',1002);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO Customers VALUES (2006,'Ciemens','London',1001);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO Customers VALUES (2008,'Cisneros','Sanjose',1007);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO Customers VALUES (2007,'Pereira','Rome',1004);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * from Customers;
++------+----------+---------+------+
+| Cnum | Cname    | City    | Snum |
++------+----------+---------+------+
+| 2001 | Hoffman  | London  | 1001 |
+| 2002 | Givanni  | Rome    | 1003 |
+| 2003 | Liu      | Sanjose | 1002 |
+| 2004 | Grass    | Berlin  | 1002 |
+| 2006 | Ciemens  | London  | 1001 |
+| 2007 | Pereira  | Rome    | 1004 |
+| 2008 | Cisneros | Sanjose | 1007 |
++------+----------+---------+------+
+7 rows in set (0.00 sec)
+
+
+------create table Orders-------------------------------------------
+
+mysql> CREATE TABLE Orders (
+    -> Onum INT PRIMARY KEY,
+    -> Amt DECIMAL(6,2),
+    -> Odate date,
+    -> Cnum INT NOT NULL,
+    -> Snum INT NOT NULL,
+    -> FOREIGN KEY (CNUM) REFERENCES Customers(Cnum),
+    -> FOREIGN KEY (Snum) REFERENCES salespeople(Snum)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+  
+-----------insert some values------------
+
+mysql> INSERT INTO Orders VALUES (3001,18.69,'1990-10-3',2008,1007);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Orders VALUES (3003,767.19,'1990-10-3',2001,1001);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO Orders VALUES (3002,1900.10,'1990-10-3',2007,1004);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO Orders VALUES (3005,5160.45,'1990-10-3',2003,1002);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO Orders VALUES (3006,1098.16,'1990-10-3',2008,1007);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO Orders VALUES (3009,1713.23,'1990-10-4',2002,1003);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO Orders VALUES (3007,75.75,'1990-10-4',2004,1002);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO Orders VALUES (3008,4273.00,'1990-10-5',2006,1001);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO Orders VALUES (3010,1309.95,'1990-10-6',2004,1002);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO Orders VALUES (3011,9891.88,'1990-10-6',2006,1001);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * from Orders;
++------+---------+------------+------+------+
+| Onum | Amt     | Odate      | Cnum | Snum |
++------+---------+------------+------+------+
+| 3001 |   18.69 | 1990-10-03 | 2008 | 1007 |
+| 3002 | 1900.10 | 1990-10-03 | 2007 | 1004 |
+| 3003 |  767.19 | 1990-10-03 | 2001 | 1001 |
+| 3005 | 5160.45 | 1990-10-03 | 2003 | 1002 |
+| 3006 | 1098.16 | 1990-10-03 | 2008 | 1007 |
+| 3007 |   75.75 | 1990-10-04 | 2004 | 1002 |
+| 3008 | 4273.00 | 1990-10-05 | 2006 | 1001 |
+| 3009 | 1713.23 | 1990-10-04 | 2002 | 1003 |
+| 3010 | 1309.95 | 1990-10-06 | 2004 | 1002 |
+| 3011 | 9891.88 | 1990-10-06 | 2006 | 1001 |
++------+---------+------------+------+------+
+10 rows in set (0.00 sec)
+
+
+ -- -- 1.Count the number of Salesperson whose name begin with ‘a’/’A’.------------
+
+mysql> SELECT Count(*)sname FROM salespeople WHERE  sname LIKE 'a%' or sname LIKE  'A%';
++-------+
+| sname |
++-------+
+|     1 |
++-------+
+1 row in set (0.01 sec)
+
+
+ -- -- 2.Display all the Salesperson whose all orders worth is more than Rs. 2000.-------
+
+mysql> SELECT * from Orders WHERE amt > 2000;
++------+---------+------------+------+------+
+| Onum | Amt     | Odate      | Cnum | Snum |
++------+---------+------------+------+------+
+| 3005 | 5160.45 | 1990-10-03 | 2003 | 1002 |
+| 3008 | 4273.00 | 1990-10-05 | 2006 | 1001 |
+| 3011 | 9891.88 | 1990-10-06 | 2006 | 1001 |
++------+---------+------------+------+------+
+3 rows in set (0.01 sec)
+
+ -- -- 3.Count the number of Salesperson belonging to Newyork.--------------------
+
+mysql> SELECT Count(*) FROM salespeople WHERE City = 'Newyork';
++----------+
+| Count(*) |
++----------+
+|        1 |
++----------+
+1 row in set (0.00 sec)
+
+-- -- 4.Display the number of Salespeople belonging to London and belonging to Paris.------
+
+mysql> SELECT Count(Sname) FROM salespeople WHERE City = 'Paris' and City = 'London';
++--------------+
+| Count(Sname) |
++--------------+
+|            0 |
++--------------+
+1 row in set (0.00 sec)
+
+-- -- 5.Display the number of orders taken by each Salesperson and their date of orders.-------
+
+mysql> SELECT Count(*),Odate,Snum from Orders group by Odate,Snum;
++----------+------------+------+
+| Count(*) | Odate      | Snum |
++----------+------------+------+
+|        2 | 1990-10-03 | 1007 |
+|        1 | 1990-10-03 | 1004 |
+|        1 | 1990-10-03 | 1001 |
+|        1 | 1990-10-03 | 1002 |
+|        1 | 1990-10-04 | 1002 |
+|        1 | 1990-10-05 | 1001 |
+|        1 | 1990-10-04 | 1003 |
+|        1 | 1990-10-06 | 1002 |
+|        1 | 1990-10-06 | 1001 |
++----------+------------+------+
+9 rows in set (0.00 sec)
+
+
+
+
+--------------------------------------------------------------------------------------------------------------
+
